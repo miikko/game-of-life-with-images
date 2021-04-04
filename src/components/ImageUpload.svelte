@@ -1,5 +1,6 @@
 <script>
-  import { range } from '../utils/arrays'
+  import { createGridFromImgData } from '../utils/grid'
+
   export let grid = undefined
 
   let canvas
@@ -21,26 +22,8 @@
       canvas.height = img.height
       canvas2DContext.drawImage(img, 0, 0)
       const imgData = canvas2DContext.getImageData(0, 0, img.width, img.height)
-      grid = createGrid(imgData)
+      grid = createGridFromImgData(imgData)
     }
-  }
-
-  const createGrid = (imgData) => {
-    let grid = []
-    let row = []
-    for (let i = 0; i < imgData.data.length; i += 4) {
-      if (i > 0 && (i / 4) % imgData.width == 0) {
-        grid.push(row.slice())
-        row = []
-      }
-      let isAlive = 0
-      for (let c = 0; c < 3; c++) {
-        imgData.data[i + c] >= 255 / 2 ? isAlive++ : isAlive--
-      }
-      row.push(isAlive > 0 ? 1 : 0)
-    }
-    grid.push(row)
-    return grid
   }
 </script>
 
