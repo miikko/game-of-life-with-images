@@ -6,25 +6,22 @@ const getNeighbourIndicesInDim = (i, max) =>
     .filter((el) => el > 0 && el < max - 1)
 
 // Live: 1, Dead: 0
-export const getNextState = (grid) => {
-  return grid.map((row, i) =>
+export const getNextState = (grid) =>
+  grid.map((row, i) =>
     row.map((cell, j) => {
       const iRange = getNeighbourIndicesInDim(i, grid.length)
       const jRange = getNeighbourIndicesInDim(j, grid[0].length)
-      // Contains index (i, j)
       const neighbourIndices = product(iRange, jRange)
-      let liveNeighbours = cell === 1 ? -1 : 0
+      let liveNeighbours = 0
       neighbourIndices.forEach(([x, y]) => grid[x][y] === 1 && liveNeighbours++)
-      if (
-        (cell === 1 && [2, 3].includes(liveNeighbours)) ||
-        (cell === 0 && liveNeighbours === 3)
-      ) {
+      if (liveNeighbours === 3) {
         return 1
+      } else if (liveNeighbours === 4) {
+        return cell
       }
       return 0
     })
   )
-}
 
 export const createGridFromImgData = (imgData) => {
   let grid = []
