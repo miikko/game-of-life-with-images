@@ -13,6 +13,6 @@ Project is now running in localhost:5000
 
 ## TODO
 
-- Optimize code (Each state change on a 540x206 grid takes about 0.7 sec)
+- Optimize code
 - Style the page
 - More options (reset state, change colors, multiple pictures?, etc.)
