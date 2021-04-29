@@ -1,13 +1,10 @@
-
-const getNeighbourIndicesInDim = (i, max) =>
-  [0, 1, 2].map((el) => i + el - 1).filter((el) => el > 0 && el < max - 1)
-
 export default class Game {
   constructor(imgData) {
     this.imgData = imgData
     this.grid = this._createGrid()
-    this.gridHeigth = this.grid.length
+    this.gridHeight = this.grid.length
     this.gridWidth = this.grid[0].length
+    this.generation = 0
   }
 
   _createGrid() {
@@ -31,7 +28,7 @@ export default class Game {
   nextState() {
     this._nextGridState()
     let imgDataIndex = 0
-    for (let i = 0; i < this.gridHeigth; i++) {
+    for (let i = 0; i < this.gridHeight; i++) {
       for (let j = 0; j < this.gridWidth; j++) {
         const cellAlive = this.grid[i][j] === 1
         for (let c = 0; c < 3; c++) {
@@ -45,12 +42,12 @@ export default class Game {
   _nextGridState() {
     this.grid = this.grid.map((row, i) =>
       row.map((cell, j) => {
-        const iRange = getNeighbourIndicesInDim(i, this.gridHeigth)
-        const jRange = getNeighbourIndicesInDim(j, this.gridWidth)
         let liveNeighbours = 0
-        iRange.forEach((i) =>
-          jRange.forEach((j) => this.grid[i][j] === 1 && liveNeighbours++)
-        )
+        for (let x = -1; x < 2 && i + x >= 0 && i + x < this.gridHeight; x++) {
+          for (let y = -1; y < 2 && j + y >= 0 && j + y < this.gridWidth; y++) {
+            this.grid[i + x][j + y] === 1 && liveNeighbours++
+          }
+        }
         if (liveNeighbours === 3) {
           return 1
         } else if (liveNeighbours === 4) {
