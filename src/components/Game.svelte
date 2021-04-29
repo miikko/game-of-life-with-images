@@ -11,6 +11,9 @@
       if (advance) {
         game.nextState()
         canvas.getContext('2d').putImageData(game.imgData, 0, 0)
+        // Svelte's reactivity works with assignments so this is necessary
+        // for the generation to update on screen.
+        game = game
       }
     }, 500)
     return () => clearInterval(interval)
@@ -41,6 +44,7 @@
 <input type="file" accept=".png, .jpeg, .jpg" on:change={handleImageChange} />
 <canvas bind:this={canvas} />
 {#if game}
+  <p>Generation: <b>{game.generation}</b></p>
   <button on:click={() => (advance = !advance)}>
     {advance ? 'Stop' : 'Start'} simulation
   </button>

@@ -37,6 +37,7 @@ export default class Game {
         imgDataIndex += 4
       }
     }
+    this.generation++
   }
 
   _nextGridState() {
